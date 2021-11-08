@@ -39,8 +39,8 @@ pub fn main(){
     }
     
     let mut spec=Array1::from(vec![0.0; nch_coarse*nch_fine/2]);
-    let freq_raw=Array1::from(linspace(0.0, 200e6, data_len/2).collect::<Vec<_>>());
-    let freq_obs=Array1::from(linspace(0.0, 200e6, spec.len()).collect::<Vec<_>>());
+    let freq_raw=Array1::from(linspace(0.0, 200e6, data_len/2).collect::<Vec<f64>>());
+    let freq_obs=Array1::from(linspace(0.0, 200e6, spec.len()).collect::<Vec<f64>>());
     
     //////////
     let niters=1000000;
@@ -63,7 +63,7 @@ pub fn main(){
             let mut csp = CspPfb::new(&selected_ch, &channelizer_fine);
         
             let mut station_output = channelizer_coarse.analyze_par(&total_signal);
-            let fine_channels:Array2<_> = csp.analyze_par(station_output.view_mut()).slice(s![8..8192+8, 2..]).to_owned();
+            let fine_channels:Array2<_> = csp.analyze_par(station_output.view()).slice(s![8..8192+8, 2..]).to_owned();
             //let spec1=fine_channels.sum_axis(Axis(1));
             let spec1=fine_channels.map(|x| x.norm_sqr()).sum_axis(Axis(1));
             c.assign(&spec1);
