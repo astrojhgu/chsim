@@ -10,11 +10,12 @@ use ndarray_npy::NpzWriter;
 
 pub fn main(){
     let nch_coarse = 1024;
-    let coeff_coarse = coeff::<f64>(nch_coarse / 2, 16, 1.1);//best
+    //let coeff_coarse = coeff::<f64>(nch_coarse / 2, 16, 1.1);//best
+    let coeff_coarse = coeff::<f64>(nch_coarse / 2, 14, 1.0);//worse
     //let coeff_coarse = coeff::<f64>(nch_coarse / 2, 12, 1.3);//bad
 
     let nch_fine = 16;
-    let coeff_fine = coeff::<f64>(nch_fine*2, 2, 0.5);
+    let coeff_fine = coeff::<f64>(nch_fine*2, 2, 1.1);
     let selected_ch: Vec<_> = (0..nch_coarse/2+1).collect();
 
     let data_len=1<<22;
