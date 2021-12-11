@@ -8,10 +8,6 @@ use rand_distr::{
     Normal
 };
 
-use num_traits::{
-    Float
-};
-
 use num_complex::{
     Complex
 };

@@ -1,10 +1,7 @@
 use ndarray::{Array1, Array2, ArrayView1, Axis, s, parallel::prelude::*};
 use num_complex::Complex;
-use num_traits::FloatConst;
-use rspfb::{csp_pfb::CspPfb, cspfb, oscillator::COscillator, ospfb, windowed_fir::coeff};
+use rspfb::{csp_pfb::CspPfb, cspfb, ospfb, windowed_fir::coeff};
 use itertools_num::linspace;
-
-use ndarray_npy::NpzWriter;
 
 
 
@@ -21,7 +18,7 @@ pub fn main(){
     let data_len=1<<22;
     let nch=data_len/2;
     
-    let fg=chsim::fg_spec(data_len/2, 50e6, 200e6, &|f|{300.0});
+    let fg=chsim::fg_spec(data_len/2, 50e6, 200e6, &|_f|{300.0});
 
 
 
@@ -55,7 +52,7 @@ pub fn main(){
         println!("{} {}", i, i as f64/(niters as f64/ncpus as f64));
 
         temp_spec.axis_iter_mut(Axis(0)).into_par_iter().for_each(|mut c|{
-            let total_signal:Vec<_>=chsim::simulate_time_series(&total_spec, &mut rand::thread_rng()).iter().map(|x| Complex::<f64>::from(x)).collect();
+            let total_signal:Vec<_>=chsim::simulate_time_series(&total_spec, &mut rand::thread_rng()).iter().map(Complex::<f64>::from).collect();
             //eprint!("{:.4} ", total_signal[100].re);
             let mut channelizer_coarse = ospfb::Analyzer::<Complex<f64>, f64>::new(nch_coarse, ArrayView1::from(&coeff_coarse));
             let channelizer_fine =
@@ -63,7 +60,7 @@ pub fn main(){
             
             let mut csp = CspPfb::new(&selected_ch, &channelizer_fine);
         
-            let mut station_output = channelizer_coarse.analyze_par(&total_signal);
+            let station_output = channelizer_coarse.analyze_par(&total_signal);
             let fine_channels:Array2<_> = csp.analyze_par(station_output.view()).slice(s![8..8192+8, 2..]).to_owned();
             //let spec1=fine_channels.sum_axis(Axis(1));
             let spec1=fine_channels.map(|x| x.norm_sqr()).sum_axis(Axis(1));
@@ -74,10 +71,10 @@ pub fn main(){
 
         if i%10==0||i==niters/ncpus-1{
             let mut outfile=ndarray_npy::NpzWriter::new(std::fs::File::create("a.npz").unwrap());
-            outfile.add_array("input_spec", &ArrayView1::from(&total_spec));
-            outfile.add_array("freq_raw", &freq_raw);
-            outfile.add_array("freq_obs", &freq_obs);
-            outfile.add_array("spec", &spec);         
+            let _=outfile.add_array("input_spec", &ArrayView1::from(&total_spec)).unwrap();
+            let _=outfile.add_array("freq_raw", &freq_raw).unwrap();
+            let _=outfile.add_array("freq_obs", &freq_obs).unwrap();
+            let _=outfile.add_array("spec", &spec).unwrap();
         }
     }
     
