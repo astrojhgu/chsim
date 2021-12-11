@@ -16,8 +16,8 @@ version = '0.15.4'
 default-features = true
 version = '0.8.1'
 
-[dependencies.rspfb]
-path = '../rspfb'
+[dependencies.rsdsp]
+path = '../rsdsp'
 
 [package]
 edition = '2021'

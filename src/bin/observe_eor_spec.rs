@@ -1,7 +1,7 @@
 use ndarray::{Array1, Array2, ArrayView1, Axis, s, parallel::prelude::*};
 use num_complex::Complex;
 use num_traits::FloatConst;
-use rspfb::{csp_pfb::CspPfb, cspfb, oscillator::COscillator, ospfb, windowed_fir::pfb_coeff};
+use rsdsp::{csp_pfb::CspPfb, cspfb, oscillator::COscillator, ospfb, windowed_fir::pfb_coeff};
 use itertools_num::linspace;
 
 use ndarray_npy::NpzWriter;
@@ -79,7 +79,5 @@ pub fn main(){
             outfile.add_array("freq_obs", &freq_obs);
             outfile.add_array("spec", &spec);         
         }
-    }
-    
-   
+    }   
 }
