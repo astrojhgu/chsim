@@ -1,6 +1,7 @@
 use ndarray::{Array1, Array2, ArrayView1, Axis, s, parallel::prelude::*};
 use num_complex::Complex;
-use rspfb::{csp_pfb::CspPfb, cspfb, ospfb, windowed_fir::coeff};
+use num_traits::FloatConst;
+use rsdsp::{csp_pfb::CspPfb, cspfb, oscillator::COscillator, ospfb, windowed_fir::pfb_coeff};
 use itertools_num::linspace;
 
 
@@ -8,11 +9,11 @@ use itertools_num::linspace;
 pub fn main(){
     let nch_coarse = 1024;
     //let coeff_coarse = coeff::<f64>(nch_coarse / 2, 16, 1.1);//best
-    let coeff_coarse = coeff::<f64>(nch_coarse / 2, 14, 1.0);//worse
+    let coeff_coarse = pfb_coeff::<f64>(nch_coarse / 2, 14, 1.0);//worse
     //let coeff_coarse = coeff::<f64>(nch_coarse / 2, 12, 1.3);//bad
 
     let nch_fine = 16;
-    let coeff_fine = coeff::<f64>(nch_fine*2, 2, 1.1);
+    let coeff_fine = pfb_coeff::<f64>(nch_fine*2, 2, 1.1);
     let selected_ch: Vec<_> = (0..nch_coarse/2+1).collect();
 
     let data_len=1<<22;
@@ -76,7 +77,5 @@ pub fn main(){
             let _=outfile.add_array("freq_obs", &freq_obs).unwrap();
             let _=outfile.add_array("spec", &spec).unwrap();
         }
-    }
-    
-   
+    }   
 }
