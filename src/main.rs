@@ -1,13 +1,6 @@
 extern crate chsim;
-use num_complex::{
-    Complex
-};
 
-use rustfft::{
-    FftPlanner
-};
 
-use ndarray_npy;
 use ndarray::{
     Array1
     , Array2
@@ -19,7 +12,7 @@ fn main() {
     let data_len=1<<18;
     let nch=data_len/2;
     let mut outfile=ndarray_npy::NpzWriter::new(std::fs::File::create("a.npz").unwrap());
-    let fg=chsim::fg_spec(data_len/2, 50e6, 200e6, &|f|{30.0});
+    let fg=chsim::fg_spec(data_len/2, 50e6, 200e6, &|_f|{30.0});
     let eor=chsim::realize_eor_spec(&|i| {if i==0{0.0} else{(i as f64).powf(-1.0)}}, nch, 50e6, 200e6, &mut rand::thread_rng(),0.1);
     //let eor:Vec<_>=(0..nch).map(|c| ((c as f64)/1024 as f64*2.0*3.14159).sin()*1.0).collect();
     
