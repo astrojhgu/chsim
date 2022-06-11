@@ -1,9 +1,6 @@
-use num_complex::{
-    Complex
-};
-
-use num_traits::{
-    Float
+use num::{
+    traits::Float
+    , complex::Complex
 };
 
 pub fn make_real_ps<T>(x:&mut [Complex<T>])

@@ -8,9 +8,7 @@ use rand_distr::{
     Normal
 };
 
-use num_complex::{
-    Complex
-};
+use num::complex::Complex;
 
 use rustfft::{
     FftPlanner

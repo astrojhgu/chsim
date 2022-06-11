@@ -1,6 +1,9 @@
 use ndarray::{Array1, Array2, ArrayView1, Axis, s, parallel::prelude::*};
-use num_complex::Complex;
-use num_traits::FloatConst;
+use num::{
+    traits::FloatConst
+    , complex::Complex
+};
+
 use rsdsp::{csp_pfb::CspPfb, cspfb, oscillator::COscillator, ospfb, windowed_fir::pfb_coeff};
 use itertools_num::linspace;
 
