@@ -60,7 +60,7 @@ pub fn main(){
             //eprint!("{:.4} ", total_signal[100].re);
             let mut channelizer_coarse = ospfb::Analyzer::<Complex<f64>, f64>::new(nch_coarse, ArrayView1::from(&coeff_coarse));
             let channelizer_fine =
-                cspfb::Analyzer::<Complex<f64>, f64>::new(nch_fine * 2, ArrayView1::from(&coeff_fine));
+                cspfb::AnalyzerFixed::<Complex<f64>, f64>::new(nch_fine * 2, ArrayView1::from(&coeff_fine));
             
             let mut csp = CspPfb::new(&selected_ch, &channelizer_fine);
         
