@@ -34,5 +34,5 @@ fn main() {
         let total_signal=Array1::from(total_signal);
         c.assign(&total_signal);
     });
-    let _=outfile.add_array("voltage", &result).unwrap();
+    outfile.add_array("voltage", &result).unwrap();
 }
