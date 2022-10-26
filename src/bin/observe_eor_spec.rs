@@ -70,11 +70,11 @@ pub fn main() {
                 //eprint!("{:.4} ", total_signal[100].re);
                 let mut channelizer_coarse = ospfb::Analyzer::<Complex<f64>, f64>::new(
                     nch_coarse,
-                    ArrayView1::from(&coeff_coarse),
+                    coeff_coarse.as_slice().unwrap(),
                 );
                 let channelizer_fine = cspfb::Analyzer::<Complex<f64>, f64>::new(
                     nch_fine * 2,
-                    ArrayView1::from(&coeff_fine),
+                    coeff_fine.as_slice().unwrap(),
                 );
 
                 let mut csp = CspPfb::new(&selected_ch, &channelizer_fine);
@@ -82,7 +82,7 @@ pub fn main() {
                 let station_output = channelizer_coarse.analyze_par(&total_signal);
                 let fine_channels: Array2<_> = csp
                     .analyze_par(station_output.view())
-                    .slice(s![8..8192 + 8, 2..])
+                    .slice(s![8_usize..8192 + 8, 2_usize..])
                     .to_owned();
                 //let spec1=fine_channels.sum_axis(Axis(1));
                 let spec1 = fine_channels.map(|x| x.norm_sqr()).sum_axis(Axis(1));
